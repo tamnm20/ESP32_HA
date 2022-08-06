@@ -16,8 +16,6 @@ String device_on;
 //const char* password = "0972620025";
 const char* ssid = "Xuong-2";
 const char* password = "68686868";
-//const char* ssid = "P. 212 B5";
-//const char* password = "212B5nha";
 //const char* ssid = "Free_Wifi";
 //const char* password = "bodeocho";
 
