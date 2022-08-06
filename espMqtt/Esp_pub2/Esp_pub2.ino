@@ -12,12 +12,8 @@ String mq_cmd;
 String mq_sensors;
 String device_on;
 
-//const char* ssid = "Wifi Free";
-//const char* password = "0972620025";
 const char* ssid = "Xuong-2";
 const char* password = "68686868";
-//const char* ssid = "Free_Wifi";
-//const char* password = "bodeocho";
 
 #define MQTT_SERVER "192.168.0.97"
 //#define MQTT_SERVER "mqtt://core-mosquitto:1883"
@@ -203,7 +199,6 @@ void loop() {
     // Read temperature as Celsius (the default)
     float t = roundf(dht.readTemperature()* 100)/100;
     //float t = roundf((70+ random(1,100)*0.03)*100)/100;
-  
     if (isnan(h) || isnan(t)) {
       Serial.println("ERROR: Failed to read from DHT sensor!");
       return;
