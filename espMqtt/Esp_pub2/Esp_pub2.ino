@@ -12,8 +12,10 @@ String mq_cmd;
 String mq_sensors;
 String device_on;
 
-const char* ssid = "Xuong-2";
-const char* password = "68686868";
+//const char* ssid = "Xuong-2";
+//const char* password = "68686868";
+const char* ssid = "Free_Wifi";
+const char* password = "bodeocho";
 
 #define MQTT_SERVER "192.168.1.17"
 //#define MQTT_SERVER "mqtt://core-mosquitto:1883"
@@ -175,8 +177,8 @@ void setup() {
   dht.begin();
   create_topic();
   Serial.setTimeout(500);
-//  setup_wifi();
-  setup_wifi_smart();
+  setup_wifi();
+//  setup_wifi_smart();
   client.setServer(MQTT_SERVER, MQTT_PORT);
   client.setCallback(callback);
   connect_to_broker();
