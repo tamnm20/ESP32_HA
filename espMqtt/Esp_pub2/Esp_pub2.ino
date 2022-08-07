@@ -15,7 +15,7 @@ String device_on;
 const char* ssid = "Xuong-2";
 const char* password = "68686868";
 
-#define MQTT_SERVER "192.168.0.97"
+#define MQTT_SERVER "192.168.1.17"
 //#define MQTT_SERVER "mqtt://core-mosquitto:1883"
 //#define MQTT_SERVER "orangepione:8123"
 //#define MQTT_SERVER "mqtt://core-mosquitto"
