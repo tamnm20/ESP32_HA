@@ -17,7 +17,7 @@ String device_on;
 const char* ssid = "Free_Wifi";
 const char* password = "bodeocho";
 
-#define MQTT_SERVER "192.168.1.17"
+#define MQTT_SERVER "192.168.2.82"
 //#define MQTT_SERVER "mqtt://core-mosquitto:1883"
 //#define MQTT_SERVER "orangepione:8123"
 //#define MQTT_SERVER "mqtt://core-mosquitto"
@@ -91,28 +91,25 @@ void setup_wifi_smart() {
   //Init WiFi as Station, start SmartConfig
   WiFi.mode(WIFI_AP_STA);
   WiFi.beginSmartConfig();
-
   //Wait for SmartConfig packet from mobile
   Serial.println("Waiting for SmartConfig.");
   while (!WiFi.smartConfigDone()) {
     delay(500);
     Serial.print(".");
   }
-
   Serial.println("");
   Serial.println("SmartConfig received.");
-
   //Wait for WiFi to connect to AP
   Serial.println("Waiting for WiFi");
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
   }
-
   Serial.println("WiFi Connected.");
-
   Serial.print("IP Address: ");
   Serial.println(WiFi.localIP());
+  device_on = "esp"+ String(chipId) +" is online";
+  Serial.println(device_on);
 }
  
 void connect_to_broker() {
@@ -177,8 +174,8 @@ void setup() {
   dht.begin();
   create_topic();
   Serial.setTimeout(500);
-  setup_wifi();
-//  setup_wifi_smart();
+//  setup_wifi();
+  setup_wifi_smart();
   client.setServer(MQTT_SERVER, MQTT_PORT);
   client.setCallback(callback);
   connect_to_broker();
