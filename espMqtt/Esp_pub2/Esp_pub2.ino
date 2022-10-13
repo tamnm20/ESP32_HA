@@ -12,17 +12,14 @@ String mq_cmd;
 String mq_sensors;
 String device_on;
 
-//const char* ssid = "Xuong-2";
-//const char* password = "68686868";
-const char* ssid = "Free_Wifi";
-const char* password = "bodeocho";
+const char* ssid = "Xuong-2";
+const char* password = "68686868";
+//const char* ssid = "ELE Club PTIT";
+//const char* password = "emyeuanhTrai";
+//const char* ssid = "Free_Wifi";
+//const char* password = "bodeocho";
 
-#define MQTT_SERVER "192.168.2.82"
-//#define MQTT_SERVER "mqtt://core-mosquitto:1883"
-//#define MQTT_SERVER "orangepione:8123"
-//#define MQTT_SERVER "mqtt://core-mosquitto"
-//#define MQTT_SERVER "localhost:1883"
-//#define MQTT_SERVER "orangepione"
+#define MQTT_SERVER "192.168.0.128"
 
 #define MQTT_PORT 1883
 #define MQTT_USER "nmtam"
@@ -40,18 +37,15 @@ WiFiClient wifiClient;
 PubSubClient client(wifiClient);
 
 void publishData(float temperature, float humidity) {
-  // create a JSON object
-    StaticJsonDocument<100> doc;
-    doc["temperature"] = temperature;
-    doc["humidity"] = humidity;
   /*
      {
         "temperature": "23.20" ,
         "humidity": "43.70"
      }
   */
-  char buffer[100];
-  serializeJson(doc, buffer);
+  
+  char buffer[100] = {0};
+  sprintf(buffer, "{\"temperature\": %0.2f, \"humidity\": %0.2f}", temperature, humidity);
   client.publish(MQTT_TOPIC_sensors, buffer, true);
   Serial.println(buffer);
 }
@@ -118,6 +112,7 @@ void connect_to_broker() {
     String clientId = "ESP32";
     clientId += String(random(0xffff), HEX);
     if (client.connect(clientId.c_str(), MQTT_USER, MQTT_PASSWORD)) {
+    //if (client.connect(clientId.c_str())) {
       Serial.println("connected");
       client.subscribe(MQTT_TOPIC_cmd);
       client.publish(CONNECT_TOPIC, device_on.c_str());
@@ -174,8 +169,8 @@ void setup() {
   dht.begin();
   create_topic();
   Serial.setTimeout(500);
-//  setup_wifi();
-  setup_wifi_smart();
+  setup_wifi();
+//  setup_wifi_smart();
   client.setServer(MQTT_SERVER, MQTT_PORT);
   client.setCallback(callback);
   connect_to_broker();
@@ -193,11 +188,8 @@ void loop() {
   if (now - lastMsg > 3000)
   {
     lastMsg = now;
-    float h = roundf(dht.readHumidity()* 100)/100;
-    //float h = roundf((20+ random(1,100)*0.01)*100)/100;
-    // Read temperature as Celsius (the default)
-    float t = roundf(dht.readTemperature()* 100)/100;
-    //float t = roundf((70+ random(1,100)*0.03)*100)/100;
+    float h = dht.readHumidity();
+    float t = dht.readTemperature();
     if (isnan(h) || isnan(t)) {
       Serial.println("ERROR: Failed to read from DHT sensor!");
       return;
